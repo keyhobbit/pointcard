@@ -21,7 +21,8 @@
             <hr>
             <div class="text-center">
                 <button type="button" class="btn btn-primary">Input Point</button>
-                <button type="button" class="btn btn-success">Result Point</button>
+                <button type="button" class="btn btn-warning">Result Point</button>
+                <button type="button" class="btn btn-success">Statistic Point</button>
             </div>
             <hr>
             <table class="table table-hover table-bordered">
@@ -35,7 +36,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="(key, turn) in turns | orderBy: '-'| limitTo: 4 ">
-                        <td>{{ key + 1 }}</td>
+                        <td>{{ turns.length - key }}</td>
                         <td><input type="number" class="form-control" ng-model="turn.points[0]"></td>
                         <td><input type="number" class="form-control" ng-model="turn.points[1]"></td>
                         <td><input type="number" class="form-control" ng-model="turn.points[2]"></td>
@@ -43,17 +44,18 @@
                     </tr>
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-success" ng-click="addTurn()">Add</button>
+                            <button type="button" class="btn-success" ng-click="addTurn()">Add</button>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" ng-click="clearTurn()">Clear</button>
+                            <button type="button" class="btn-danger" ng-click="clearTurn()">Clear</button>
                         </td>
                         <td>Total : </td>
                         <td>{{ turns.length }}</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-primary" ng-click="getTotal()">Total</button>
+                            <button type="button" class="btn-primary" ng-click="getTotal()">Total</button>
                         </td>
                         <td ng-repeat="value in listUsers">{{ value.total }}</td>
                     </tr>

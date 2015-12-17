@@ -1,0 +1,38 @@
+<div class="container" ng-controller="PointInputCtrl">
+    <hr>
+    <div class="text-center">
+        <a ng-href="#/input" class="btn btn-primary">Input Point</a>
+        <a ng-href="#/results" class="btn btn-success">Result Point</a>
+    </div>
+    <hr>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th><input type="number" class="form-control" min="{5"} max="111" step="1" ng-model="maxTurn"></th>
+                <th ng-repeat="user in listUsers">
+                    <input type="text" class="form-control" ng-model="user.name">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key, turn) in turns | orderBy: '-'| limitTo: 4 ">
+                <td>{{ turns.length - key }}</td>
+                <td><input type="number" class="form-control" ng-model="turn.points[0]"></td>
+                <td><input type="number" class="form-control" ng-model="turn.points[1]"></td>
+                <td><input type="number" class="form-control" ng-model="turn.points[2]"></td>
+                <td><input type="number" class="form-control" ng-model="turn.points[3]"></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" class="btn-success" ng-click="addTurn()">Add</button>
+                </td>
+                <td>
+                    <button type="button" class="btn-danger" ng-click="clearTurn()">Clear</button>
+                </td>
+                <td>Total : </td>
+                <td>{{ turns.length }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
