@@ -1,11 +1,19 @@
 var pointApp = angular.module('pointApp', []);
 
 pointApp.controller('PointController', function($scope) {
-    $scope.maxTurn = 21;
+    // control view
+    $scope.input = true;
+    $scope.result = false;
+    $scope.listPoint = false;
+    $scope.titleMethod = 'Input Point';
+
+    $scope.maxTurn = 4;
 
     $scope.turns = [
         {points: [0, 0, 0, 0]},
-        {points: [0, 0, 0, 0]},
+        {points: [1, 2, 3, 0]},
+        {points: [1, 2, 0, 3]},
+        {points: [1, 2, 3, 0]},
     ];
     
     $scope.listUsers = [
@@ -18,6 +26,7 @@ pointApp.controller('PointController', function($scope) {
     $scope.listValues = [];
 
     $scope.addTurn = function() {
+        console.log($scope.maxTurn, $scope.turns.length);
         if ($scope.turns.length >= $scope.maxTurn) {
             alert("Turns limited !");
             return ;
@@ -42,8 +51,9 @@ pointApp.controller('PointController', function($scope) {
     $scope.getTotal = function() {
         if ($scope.turns.length != $scope.maxTurn) {
             $scope.alertTurn();
-            return ;
+            return;
         }
+
         angular.forEach($scope.listUsers, function(user, key) {
             user.total = user.total != 0 ? 0 : 0;
 
@@ -55,8 +65,6 @@ pointApp.controller('PointController', function($scope) {
                 }
             });
         });
-
-        $scope.statistics = $scope.makeStatistics();
     }
 
     $scope.addListValues = function(number) {
@@ -93,5 +101,42 @@ pointApp.controller('PointController', function($scope) {
         angular.forEach($scope.listUsers, function(user, key) {
             user.total = 0;
         });
+    }
+
+    $scope.setInput = function() {
+        $scope.input = true;
+        $scope.result = false;
+        $scope.listPoint = false;
+        $scope.titleMethod = 'Input Point';
+    }
+
+    $scope.setResult = function() {
+        if ($scope.checkEndGame()) {
+            $scope.input = false;
+            $scope.result = true;
+            $scope.listPoint = false;
+            $scope.titleMethod = 'Point Result';
+
+            $scope.getTotal();
+            $scope.statistics = $scope.makeStatistics();
+        }
+        
+    }
+
+    $scope.setListPoint = function() {
+        if ($scope.checkEndGame()) {
+            $scope.input = false;
+            $scope.result = false;
+            $scope.listPoint = true;
+            $scope.titleMethod = 'List Point';
+        }
+    }
+
+    $scope.checkEndGame = function () {
+        if ($scope.turns.length != $scope.maxTurn) {
+            $scope.alertTurn();
+            return false;
+        }
+        return true;
     }
 });

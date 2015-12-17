@@ -20,51 +20,77 @@
         <div class="container" ng-controller="PointController">
             <hr>
             <div class="text-center">
-                <button type="button" class="btn btn-primary">Input Point</button>
-                <button type="button" class="btn btn-warning">Result Point</button>
-                <button type="button" class="btn btn-success">Statistic Point</button>
+                <button type="button" class="btn btn-primary" ng-click="setInput()">Input Point</button>
+                <button type="button" class="btn btn-success" ng-click="setResult()">Result Point</button>
+                <button type="button" class="btn btn-danger" ng-click="setListPoint()">Statistic Point</button>
+                <h3>{{ titleMethod }}</h3>
             </div>
             <hr>
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th><input type="number" class="form-control" min="{5"} max="111" step="1" ng-model="maxTurn"></th>
-                        <th ng-repeat="user in listUsers">
+
+            <div class="row">
+                <div class="header">
+                     <div class="col-xs-3">
+                        Tunrs :
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="number" class="form-control" min="5" max="111" step="1" ng-model="maxTurn">
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-xs-3">
+                        <button type="button" class="btn-success" ng-click="addTurn()">Add</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr ng-if="input">
+                </div>
+
+                <div ng-if="input" class="input">
+                    <div class="name col-xs-4 col-sm-3">
+                        <p>Name</p>
+                        <p ng-repeat="user in listUsers">
                             <input type="text" class="form-control" ng-model="user.name">
-                        </th>
-                    </tr>
-                </thead>
+                        </p>
+                    </div>
+                    <div ng-repeat="(key, turn) in turns | orderBy: '-'| limitTo: 3" class="row col-xs-3 col-sm-2" >
+                        <p class="text-center">{{ turns.length - key }}</p>
+                        <p><input type="number" class="form-control" ng-model="turn.points[0]"></p>
+                        <p><input type="number" class="form-control" ng-model="turn.points[1]"></p>
+                        <p><input type="number" class="form-control" ng-model="turn.points[2]"></p>
+                        <p><input type="number" class="form-control" ng-model="turn.points[3]"></p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <table class="table table-hover table-bordered">
                 <tbody>
-                    <tr ng-repeat="(key, turn) in turns | orderBy: '-'| limitTo: 4 ">
-                        <td>{{ turns.length - key }}</td>
-                        <td><input type="number" class="form-control" ng-model="turn.points[0]"></td>
-                        <td><input type="number" class="form-control" ng-model="turn.points[1]"></td>
-                        <td><input type="number" class="form-control" ng-model="turn.points[2]"></td>
-                        <td><input type="number" class="form-control" ng-model="turn.points[3]"></td>
-                    </tr>
-                    <tr>
+                    <tr ng-if="!input">
                         <td>
-                            <button type="button" class="btn-success" ng-click="addTurn()">Add</button>
+                            <b>Name : </b>
                         </td>
-                        <td>
-                            <button type="button" class="btn-danger" ng-click="clearTurn()">Clear</button>
+                        <td ng-repeat="user in listUsers">
+                            <input ng-if="input" type="text" class="form-control" ng-model="user.name">
+                            <span ng-if="! input" ng-bind="user.name"></span>
                         </td>
-                        <td>Total : </td>
-                        <td>{{ turns.length }}</td>
-                        <td></td>
                     </tr>
-                    <tr>
+                    <tr ng-if="result">
                         <td>
-                            <button type="button" class="btn-primary" ng-click="getTotal()">Total</button>
+                            <b>Total</b>
                         </td>
-                        <td ng-repeat="value in listUsers">{{ value.total }}</td>
+                        <td ng-repeat="value in listUsers"><b>{{ value.total }}</b></td>
                     </tr>
-                    <tr ng-repeat="statistic in statistics | orderBy: 'statistic.number' ">
+                    <tr ng-if="result" ng-repeat="statistic in statistics | orderBy: '-statistic.number' ">
                         <td>{{ statistic.number }}</td>
                         <td>{{ statistic.values[0] }}</td>
                         <td>{{ statistic.values[1] }}</td>
                         <td>{{ statistic.values[2] }}</td>
                         <td>{{ statistic.values[3] }}</td>
+                    </tr>
+                    <tr ng-if="listPoint" ng-repeat="(key, turn) in turns">
+                        <td>{{ key + 1 }}</td>
+                        <td>{{ turn.points[0] }}</td>
+                        <td>{{ turn.points[1] }}</td>
+                        <td>{{ turn.points[2] }}</td>
+                        <td>{{ turn.points[3] }}</td>
                     </tr>
                 </tbody>
             </table>
